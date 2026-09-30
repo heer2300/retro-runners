@@ -1,0 +1,18 @@
+# Render Blueprint — New + > Blueprint > pick this repo.
+services:
+  - type: web
+    name: retro-runners
+    runtime: python
+    plan: starter                 # persistent disks need a paid plan (see README for the free option)
+    buildCommand: pip install -r requirements.txt
+    startCommand: python server.py
+    healthCheckPath: /healthz
+    envVars:
+      - key: RR_PIN               # admin PIN — Render generates one; read it in Environment tab (or set your own)
+        generateValue: true
+      - key: RR_DATA_DIR          # edits + uploaded photos are stored on the disk below
+        value: /var/data
+    disk:
+      name: retro-data
+      mountPath: /var/data
+      sizeGB: 1
